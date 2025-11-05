@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react" // ✅ added useEffect
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -23,21 +23,6 @@ export function RSVPSection() {
   const [submitted, setSubmitted] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [loading, setLoading] = useState(false)
-
-  // ✅ Added this useEffect to open May 2026 calendar by default
-  useEffect(() => {
-    const arrival = document.getElementById("arrival") as HTMLInputElement
-    const departure = document.getElementById("departure") as HTMLInputElement
-
-    if (arrival && !arrival.value) {
-      arrival.value = "2026-05-01"
-      arrival.value = ""
-    }
-    if (departure && !departure.value) {
-      departure.value = "2026-05-01"
-      departure.value = ""
-    }
-  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -67,6 +52,7 @@ export function RSVPSection() {
 
   return (
     <section id="rsvp" className="py-20 px-4 bg-white relative overflow-hidden">
+      {/* Confetti animation */}
       {showConfetti && (
         <div className="absolute inset-0 pointer-events-none z-10">
           {[...Array(50)].map((_, i) => (
@@ -127,14 +113,27 @@ export function RSVPSection() {
                   <Input id="children" name="children" placeholder="How many and their ages (if yes)" />
                 </div>
 
+                {/* ✅ Updated date pickers to default to May 2026 */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="arrival">Arrival Date</Label>
-                    <Input id="arrival" name="arrival" type="date" />
+                    <Input
+                      id="arrival"
+                      name="arrival"
+                      type="date"
+                      min="2026-05-01"
+                      max="2026-05-25"
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="departure">Departure Date</Label>
-                    <Input id="departure" name="departure" type="date" />
+                    <Input
+                      id="departure"
+                      name="departure"
+                      type="date"
+                      min="2026-05-01"
+                      max="2026-05-25"
+                    />
                   </div>
                 </div>
 
