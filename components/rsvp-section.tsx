@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -23,14 +22,32 @@ const events = [
 export function RSVPSection() {
   const [submitted, setSubmitted] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitted(true)
-    setShowConfetti(true)
+    setLoading(true)
 
-    // Remove confetti after animation
-    setTimeout(() => setShowConfetti(false), 3000)
+    const formData = new FormData(e.currentTarget)
+    formData.append("access_key", "df59dfc9-0bfd-4557-9c98-1b4d2f9df51e") // ✅ your Web3Forms access key
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    })
+
+    const data = await response.json()
+    setLoading(false)
+
+    if (data.success) {
+      setSubmitted(true)
+      setShowConfetti(true)
+      setTimeout(() => setShowConfetti(false), 3000)
+      e.currentTarget.reset()
+    } else {
+      alert("Something went wrong. Please try again later.")
+      console.error("Web3Forms error:", data)
+    }
   }
 
   return (
@@ -73,37 +90,37 @@ export function RSVPSection() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Name *</Label>
-                    <Input id="name" required placeholder="Your full name" />
+                    <Input id="name" name="name" required placeholder="Your full name" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">Email *</Label>
-                    <Input id="email" type="email" required placeholder="your@email.com" />
+                    <Input id="email" name="email" type="email" required placeholder="your@email.com" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone *</Label>
-                  <Input id="phone" type="tel" required placeholder="(123) 456-7890" />
+                  <Input id="phone" name="phone" type="tel" required placeholder="(123) 456-7890" />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="guest">Bringing a guest?</Label>
-                  <Input id="guest" placeholder="Guest name and age (if yes)" />
+                  <Input id="guest" name="guest" placeholder="Guest name and age (if yes)" />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="children">Bringing children?</Label>
-                  <Input id="children" placeholder="How many and their ages (if yes)" />
+                  <Input id="children" name="children" placeholder="How many and their ages (if yes)" />
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="arrival">Arrival Date</Label>
-                    <Input id="arrival" type="date" />
+                    <Input id="arrival" name="arrival" type="date" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="departure">Departure Date</Label>
-                    <Input id="departure" type="date" />
+                    <Input id="departure" name="departure" type="date" />
                   </div>
                 </div>
 
@@ -112,7 +129,7 @@ export function RSVPSection() {
                   <div className="space-y-3 pl-2">
                     {events.map((event, idx) => (
                       <div key={idx} className="flex items-start gap-3">
-                        <Checkbox id={`event-${idx}`} />
+                        <Checkbox id={`event-${idx}`} name="events" value={event} />
                         <label htmlFor={`event-${idx}`} className="text-sm leading-relaxed cursor-pointer">
                           {event}
                         </label>
@@ -125,6 +142,7 @@ export function RSVPSection() {
                   <Label htmlFor="accessibility">Accessibility Needs</Label>
                   <Textarea
                     id="accessibility"
+                    name="accessibility"
                     placeholder="Any accessibility requirements we should know about?"
                     rows={3}
                   />
@@ -132,12 +150,17 @@ export function RSVPSection() {
 
                 <div className="space-y-2">
                   <Label htmlFor="dietary">Allergies or Dietary Restrictions</Label>
-                  <Textarea id="dietary" placeholder="Please list any allergies or dietary restrictions" rows={3} />
+                  <Textarea
+                    id="dietary"
+                    name="dietary"
+                    placeholder="Please list any allergies or dietary restrictions"
+                    rows={3}
+                  />
                 </div>
 
                 <div className="space-y-3 p-4 bg-gradient-to-r from-[var(--gold)]/10 to-[var(--blush)]/10 rounded-lg border-2 border-[var(--gold)]/20">
                   <div className="flex items-start gap-3">
-                    <Checkbox id="promise" required />
+                    <Checkbox id="promise" name="promise" required />
                     <label htmlFor="promise" className="text-sm font-medium leading-relaxed cursor-pointer">
                       Do you solemnly swear to have the best time ever? *
                     </label>
@@ -147,9 +170,10 @@ export function RSVPSection() {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={loading}
                   className="w-full bg-[var(--gold)] hover:bg-[var(--gold)]/90 text-[var(--black)] font-semibold text-lg py-6 rounded-full shadow-lg hover:shadow-xl transition-all"
                 >
-                  Submit RSVP
+                  {loading ? "Sending..." : "Submit RSVP"}
                 </Button>
               </form>
             </CardContent>
