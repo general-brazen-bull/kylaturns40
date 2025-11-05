@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react" // ✅ added useEffect
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -24,12 +24,27 @@ export function RSVPSection() {
   const [showConfetti, setShowConfetti] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  // ✅ Added this useEffect to open May 2026 calendar by default
+  useEffect(() => {
+    const arrival = document.getElementById("arrival") as HTMLInputElement
+    const departure = document.getElementById("departure") as HTMLInputElement
+
+    if (arrival && !arrival.value) {
+      arrival.value = "2026-05-01"
+      arrival.value = ""
+    }
+    if (departure && !departure.value) {
+      departure.value = "2026-05-01"
+      departure.value = ""
+    }
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
 
     const formData = new FormData(e.currentTarget)
-    formData.append("access_key", "df59dfc9-0bfd-4557-9c98-1b4d2f9df51e") // ✅ your Web3Forms access key
+    formData.append("access_key", "df59dfc9-0bfd-4557-9c98-1b4d2f9df51e")
 
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
@@ -52,7 +67,6 @@ export function RSVPSection() {
 
   return (
     <section id="rsvp" className="py-20 px-4 bg-white relative overflow-hidden">
-      {/* Confetti animation */}
       {showConfetti && (
         <div className="absolute inset-0 pointer-events-none z-10">
           {[...Array(50)].map((_, i) => (
