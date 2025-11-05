@@ -43,8 +43,7 @@ export function HeroSection() {
         </h1>
 
         <p className="text-xl md:text-2xl text-[var(--black)]/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-          Join me for a weekend of fun, laughter, and memories in beautiful Vancouver.
-        </p>
+        Join me for a few unforgettable days of fun, laughter, and memories in beautiful Vancouver.        </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button
