@@ -3,39 +3,45 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Sparkles } from "lucide-react"
-import BlurText from "./TextAnimations/BlurText/BlurText"
+import BlurText from "@/components/TextAnimations/BlurText/BlurText.jsx"
 
 export function HeroSection() {
-  const [sparkles, setSparkles] = useState<JSX.Element[]>([])
-
-  // ✅ Generate sparkles client-side only (fixes hydration mismatch)
-  useEffect(() => {
-    const sparkleElements = Array.from({ length: 20 }, (_, i) => (
-      <div
-        key={i}
-        className="absolute w-2 h-2 bg-[var(--gold)] rounded-full sparkle"
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          animationDelay: `${Math.random() * 2}s`,
-        }}
-      />
-    ))
-    setSparkles(sparkleElements)
-  }, [])
-
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     element?.scrollIntoView({ behavior: "smooth" })
   }
+
+  // ✅ Fix: generate sparkles only on the client
+  const [sparkles, setSparkles] = useState<{ left: string; top: string; delay: string }[]>([])
+
+  useEffect(() => {
+    const generated = Array.from({ length: 20 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 2}s`,
+    }))
+    setSparkles(generated)
+  }, [])
 
   return (
     <section
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--ivory)] via-[var(--blush)] to-[var(--gold)]"
     >
-      {/* ✅ Sparkle background (client-only) */}
-      <div className="absolute inset-0 overflow-hidden">{sparkles}</div>
+      {/* Sparkle background effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        {sparkles.map((s, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-[var(--gold)] rounded-full sparkle"
+            style={{
+              left: s.left,
+              top: s.top,
+              animationDelay: s.delay,
+            }}
+          />
+        ))}
+      </div>
 
       {/* Shimmer overlay */}
       <div className="absolute inset-0 shimmer opacity-30" />
@@ -48,17 +54,18 @@ export function HeroSection() {
           </span>
         </div>
 
+        {/* Animated Heading */}
         <BlurText
-          text="The Kyla Turns 40 Experience"
-          delay={0.1}
-          animateBy="words"
-          direction="top"
-          className="font-serif text-6xl md:text-8xl font-bold text-[var(--black)] text-balance lg:text-9xl mb-6"
-        />
+  text="The Kyla Turns 40 Experience"
+  delay={250} // slower stagger between words (300ms)
+  stepDuration={0.7} // smoother word fade duration
+  animateBy="words"
+  direction="top"
+  className="font-serif text-6xl md:text-8xl font-bold text-[var(--black)] text-balance lg:text-9xl mb-6 text-center justify-center"
+/>
 
         <p className="text-xl md:text-2xl text-[var(--black)]/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-          Join me for a few unforgettable days of fun, laughter, and memories in
-          beautiful Vancouver.
+          Join me for a few unforgettable days of fun, laughter, and memories in beautiful Vancouver.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

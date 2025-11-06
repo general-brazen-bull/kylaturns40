@@ -85,9 +85,7 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 "[project]/components/TextAnimations/BlurText/BlurText.jsx [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-/*
-	Installed from https://reactbits.dev/tailwind/
-*/ __turbopack_context__.s([
+__turbopack_context__.s([
     "default",
     ()=>__TURBOPACK__default__export__
 ]);
@@ -96,6 +94,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$mo
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
+"use client";
 ;
 ;
 const buildKeyframes = (from, steps)=>{
@@ -112,19 +111,27 @@ const buildKeyframes = (from, steps)=>{
     });
     return keyframes;
 };
-const BlurText = ({ text = "", delay = 200, className = "", animateBy = "words", direction = "top", threshold = 0.1, rootMargin = "0px", animationFrom, animationTo, easing = (t)=>t, onAnimationComplete, stepDuration = 0.35 })=>{
+const BlurText = ({ text = "", delay = 200, className = "", animateBy = "words", direction = "top", threshold = 0.1, rootMargin = "0px", animationFrom, animationTo, easing = [
+    0.33,
+    1,
+    0.68,
+    1
+], onAnimationComplete, stepDuration = 0.35 })=>{
     _s();
     const elements = animateBy === "words" ? text.split(" ") : text.split("");
     const [inView, setInView] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [hasAnimated, setHasAnimated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const ref = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // Only trigger once when in view
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "BlurText.useEffect": ()=>{
-            if (!ref.current) return;
+            if (!ref.current || hasAnimated) return;
             const observer = new IntersectionObserver({
                 "BlurText.useEffect": ([entry])=>{
                     if (entry.isIntersecting) {
                         setInView(true);
-                        observer.unobserve(ref.current);
+                        setHasAnimated(true); // ✅ ensures it only animates once
+                        observer.disconnect();
                     }
                 }
             }["BlurText.useEffect"], {
@@ -135,21 +142,22 @@ const BlurText = ({ text = "", delay = 200, className = "", animateBy = "words",
             return ({
                 "BlurText.useEffect": ()=>observer.disconnect()
             })["BlurText.useEffect"];
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         }
     }["BlurText.useEffect"], [
         threshold,
-        rootMargin
+        rootMargin,
+        hasAnimated
     ]);
+    // Animation presets
     const defaultFrom = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "BlurText.useMemo[defaultFrom]": ()=>direction === "top" ? {
                 filter: "blur(10px)",
                 opacity: 0,
-                y: -50
+                y: -40
             } : {
                 filter: "blur(10px)",
                 opacity: 0,
-                y: 50
+                y: 40
             }
     }["BlurText.useMemo[defaultFrom]"], [
         direction
@@ -157,9 +165,9 @@ const BlurText = ({ text = "", delay = 200, className = "", animateBy = "words",
     const defaultTo = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "BlurText.useMemo[defaultTo]": ()=>[
                 {
-                    filter: "blur(5px)",
-                    opacity: 0.5,
-                    y: direction === "top" ? 5 : -5
+                    filter: "blur(4px)",
+                    opacity: 0.8,
+                    y: direction === "top" ? 8 : -8
                 },
                 {
                     filter: "blur(0px)",
@@ -179,38 +187,48 @@ const BlurText = ({ text = "", delay = 200, className = "", animateBy = "words",
     }, (_, i)=>stepCount === 1 ? 0 : i / (stepCount - 1));
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
         ref: ref,
-        className: `blur-text ${className} flex flex-wrap`,
+        className: `blur-text flex flex-wrap justify-center text-center ${className}`,
         children: elements.map((segment, index)=>{
             const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
             const spanTransition = {
                 duration: totalDuration,
                 times,
-                delay: index * delay / 1000
+                delay: index * delay / 1000,
+                ease: easing
             };
-            spanTransition.ease = easing;
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].span, {
                 className: "inline-block will-change-[transform,filter,opacity]",
                 initial: fromSnapshot,
-                animate: inView ? animateKeyframes : fromSnapshot,
+                animate: inView ? animateKeyframes : {
+                    opacity: 1,
+                    y: 0,
+                    filter: "blur(0px)"
+                },
+                viewport: {
+                    once: true
+                },
                 transition: spanTransition,
                 onAnimationComplete: index === elements.length - 1 ? onAnimationComplete : undefined,
+                style: {
+                    display: "inline-block"
+                },
                 children: [
                     segment === " " ? "\u00A0" : segment,
                     animateBy === "words" && index < elements.length - 1 && "\u00A0"
                 ]
             }, index, true, {
                 fileName: "[project]/components/TextAnimations/BlurText/BlurText.jsx",
-                lineNumber: 97,
+                lineNumber: 92,
                 columnNumber: 11
             }, ("TURBOPACK compile-time value", void 0));
         })
     }, void 0, false, {
         fileName: "[project]/components/TextAnimations/BlurText/BlurText.jsx",
-        lineNumber: 85,
+        lineNumber: 78,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(BlurText, "IxnOfDOifNR2DM+0TATKkPR86iM=");
+_s(BlurText, "eog+uy6ER5lO0BfcoRDcq0CJ45E=");
 _c = BlurText;
 const __TURBOPACK__default__export__ = BlurText;
 var _c;
@@ -240,52 +258,56 @@ var _s = __turbopack_context__.k.signature();
 ;
 function HeroSection() {
     _s();
-    const [sparkles, setSparkles] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
-    // ✅ Generate sparkles client-side only (fixes hydration mismatch)
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "HeroSection.useEffect": ()=>{
-            const sparkleElements = Array.from({
-                length: 20
-            }, {
-                "HeroSection.useEffect.sparkleElements": (_, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "absolute w-2 h-2 bg-[var(--gold)] rounded-full sparkle",
-                        style: {
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 2}s`
-                        }
-                    }, i, false, {
-                        fileName: "[project]/components/hero-section.tsx",
-                        lineNumber: 14,
-                        columnNumber: 7
-                    }, this)
-            }["HeroSection.useEffect.sparkleElements"]);
-            setSparkles(sparkleElements);
-        }
-    }["HeroSection.useEffect"], []);
     const scrollToSection = (id)=>{
         const element = document.getElementById(id);
         element?.scrollIntoView({
             behavior: "smooth"
         });
     };
+    // ✅ Fix: generate sparkles only on the client
+    const [sparkles, setSparkles] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "HeroSection.useEffect": ()=>{
+            const generated = Array.from({
+                length: 20
+            }).map({
+                "HeroSection.useEffect.generated": ()=>({
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        delay: `${Math.random() * 2}s`
+                    })
+            }["HeroSection.useEffect.generated"]);
+            setSparkles(generated);
+        }
+    }["HeroSection.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         id: "hero",
         className: "relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--ivory)] via-[var(--blush)] to-[var(--gold)]",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute inset-0 overflow-hidden",
-                children: sparkles
+                children: sparkles.map((s, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "absolute w-2 h-2 bg-[var(--gold)] rounded-full sparkle",
+                        style: {
+                            left: s.left,
+                            top: s.top,
+                            animationDelay: s.delay
+                        }
+                    }, i, false, {
+                        fileName: "[project]/components/hero-section.tsx",
+                        lineNumber: 34,
+                        columnNumber: 11
+                    }, this))
             }, void 0, false, {
                 fileName: "[project]/components/hero-section.tsx",
-                lineNumber: 38,
+                lineNumber: 32,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute inset-0 shimmer opacity-30"
             }, void 0, false, {
                 fileName: "[project]/components/hero-section.tsx",
-                lineNumber: 41,
+                lineNumber: 47,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -298,32 +320,33 @@ function HeroSection() {
                                 className: "w-5 h-5 text-[var(--gold)]"
                             }, void 0, false, {
                                 fileName: "[project]/components/hero-section.tsx",
-                                lineNumber: 45,
+                                lineNumber: 51,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 className: "text-sm font-medium text-[var(--black)]",
-                                children: "May 18–21, 2025 • Vancouver, BC"
+                                children: "May 18–21, 2026 • Vancouver, BC"
                             }, void 0, false, {
                                 fileName: "[project]/components/hero-section.tsx",
-                                lineNumber: 46,
+                                lineNumber: 52,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/hero-section.tsx",
-                        lineNumber: 44,
+                        lineNumber: 50,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$TextAnimations$2f$BlurText$2f$BlurText$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         text: "The Kyla Turns 40 Experience",
-                        delay: 0.1,
+                        delay: 250,
+                        stepDuration: 0.7,
                         animateBy: "words",
                         direction: "top",
-                        className: "font-serif text-6xl md:text-8xl font-bold text-[var(--black)] text-balance lg:text-9xl mb-6"
+                        className: "font-serif text-6xl md:text-8xl font-bold text-[var(--black)] text-balance lg:text-9xl mb-6 text-center justify-center"
                     }, void 0, false, {
                         fileName: "[project]/components/hero-section.tsx",
-                        lineNumber: 51,
+                        lineNumber: 58,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -331,7 +354,7 @@ function HeroSection() {
                         children: "Join me for a few unforgettable days of fun, laughter, and memories in beautiful Vancouver."
                     }, void 0, false, {
                         fileName: "[project]/components/hero-section.tsx",
-                        lineNumber: 59,
+                        lineNumber: 67,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -344,7 +367,7 @@ function HeroSection() {
                                 children: "RSVP Now"
                             }, void 0, false, {
                                 fileName: "[project]/components/hero-section.tsx",
-                                lineNumber: 65,
+                                lineNumber: 72,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -355,13 +378,13 @@ function HeroSection() {
                                 children: "View Itinerary"
                             }, void 0, false, {
                                 fileName: "[project]/components/hero-section.tsx",
-                                lineNumber: 72,
+                                lineNumber: 79,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/hero-section.tsx",
-                        lineNumber: 64,
+                        lineNumber: 71,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -372,29 +395,29 @@ function HeroSection() {
                                 className: "w-1.5 h-3 bg-[var(--gold)] rounded-full animate-bounce"
                             }, void 0, false, {
                                 fileName: "[project]/components/hero-section.tsx",
-                                lineNumber: 85,
+                                lineNumber: 92,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/hero-section.tsx",
-                            lineNumber: 84,
+                            lineNumber: 91,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/hero-section.tsx",
-                        lineNumber: 83,
+                        lineNumber: 90,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/hero-section.tsx",
-                lineNumber: 43,
+                lineNumber: 49,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/hero-section.tsx",
-        lineNumber: 33,
+        lineNumber: 27,
         columnNumber: 5
     }, this);
 }
@@ -2327,42 +2350,60 @@ __turbopack_context__.s([
     ()=>Footer
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowUp$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-up.js [app-client] (ecmascript) <export default as ArrowUp>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sparkles.js [app-client] (ecmascript) <export default as Sparkles>");
+;
+var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
 ;
 function Footer() {
+    _s();
     const scrollToTop = ()=>{
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
     };
+    // ✅ Generate sparkles only after hydration (client-side)
+    const [sparkles, setSparkles] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Footer.useEffect": ()=>{
+            const generated = Array.from({
+                length: 30
+            }).map({
+                "Footer.useEffect.generated": ()=>({
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        delay: `${Math.random() * 2}s`
+                    })
+            }["Footer.useEffect.generated"]);
+            setSparkles(generated);
+        }
+    }["Footer.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
         className: "relative py-16 px-4 bg-gradient-to-br from-[var(--black)] to-[var(--black)]/90 text-white overflow-hidden",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute inset-0 overflow-hidden opacity-30",
-                children: [
-                    ...Array(30)
-                ].map((_, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: sparkles.map((s, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "absolute w-1 h-1 bg-[var(--gold)] rounded-full sparkle",
                         style: {
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 2}s`
+                            left: s.left,
+                            top: s.top,
+                            animationDelay: s.delay
                         }
                     }, i, false, {
                         fileName: "[project]/components/footer.tsx",
-                        lineNumber: 16,
+                        lineNumber: 29,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/components/footer.tsx",
-                lineNumber: 14,
+                lineNumber: 27,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2375,7 +2416,7 @@ function Footer() {
                                 className: "w-12 h-12 text-[var(--gold)] mx-auto mb-4"
                             }, void 0, false, {
                                 fileName: "[project]/components/footer.tsx",
-                                lineNumber: 30,
+                                lineNumber: 43,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2383,7 +2424,7 @@ function Footer() {
                                 children: "Can't wait to celebrate with you!"
                             }, void 0, false, {
                                 fileName: "[project]/components/footer.tsx",
-                                lineNumber: 31,
+                                lineNumber: 44,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2391,51 +2432,51 @@ function Footer() {
                                 children: "#KylaTurns40"
                             }, void 0, false, {
                                 fileName: "[project]/components/footer.tsx",
-                                lineNumber: 34,
+                                lineNumber: 47,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "text-[var(--blush)] text-sm",
-                                children: "May 18-21, 2025 • Vancouver, BC"
+                                children: "May 18–21, 2026 • Vancouver, BC"
                             }, void 0, false, {
                                 fileName: "[project]/components/footer.tsx",
-                                lineNumber: 35,
+                                lineNumber: 48,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/footer.tsx",
-                        lineNumber: 29,
+                        lineNumber: 42,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "gold-divider max-w-md mx-auto mb-8"
                     }, void 0, false, {
                         fileName: "[project]/components/footer.tsx",
-                        lineNumber: 38,
+                        lineNumber: 51,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-2 text-sm text-white/70 mb-8",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                children: "© 2025 Kyla Turns 40"
+                                children: "© 2026 Kyla Turns 40"
                             }, void 0, false, {
                                 fileName: "[project]/components/footer.tsx",
-                                lineNumber: 41,
+                                lineNumber: 54,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 children: "Presented by Brazen Bull Creative"
                             }, void 0, false, {
                                 fileName: "[project]/components/footer.tsx",
-                                lineNumber: 42,
+                                lineNumber: 55,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/footer.tsx",
-                        lineNumber: 40,
+                        lineNumber: 53,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2447,29 +2488,30 @@ function Footer() {
                                 className: "w-5 h-5 mr-2"
                             }, void 0, false, {
                                 fileName: "[project]/components/footer.tsx",
-                                lineNumber: 50,
+                                lineNumber: 63,
                                 columnNumber: 11
                             }, this),
                             "Back to Top"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/footer.tsx",
-                        lineNumber: 45,
+                        lineNumber: 58,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/footer.tsx",
-                lineNumber: 28,
+                lineNumber: 41,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/footer.tsx",
-        lineNumber: 12,
+        lineNumber: 25,
         columnNumber: 5
     }, this);
 }
+_s(Footer, "rAS3D+smpTBBJrVptzE8y59LsrU=");
 _c = Footer;
 var _c;
 __turbopack_context__.k.register(_c, "Footer");

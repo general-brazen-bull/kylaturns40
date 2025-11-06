@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowUp, Sparkles } from "lucide-react"
 
@@ -8,18 +9,30 @@ export function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
+  // ✅ Generate sparkles only after hydration (client-side)
+  const [sparkles, setSparkles] = useState<{ left: string; top: string; delay: string }[]>([])
+
+  useEffect(() => {
+    const generated = Array.from({ length: 30 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 2}s`,
+    }))
+    setSparkles(generated)
+  }, [])
+
   return (
     <footer className="relative py-16 px-4 bg-gradient-to-br from-[var(--black)] to-[var(--black)]/90 text-white overflow-hidden">
       {/* Sparkle background */}
       <div className="absolute inset-0 overflow-hidden opacity-30">
-        {[...Array(30)].map((_, i) => (
+        {sparkles.map((s, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-[var(--gold)] rounded-full sparkle"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
+              left: s.left,
+              top: s.top,
+              animationDelay: s.delay,
             }}
           />
         ))}
@@ -32,7 +45,7 @@ export function Footer() {
             Can't wait to celebrate with you!
           </h3>
           <p className="text-2xl text-[var(--gold)] font-semibold mb-2">#KylaTurns40</p>
-          <p className="text-[var(--blush)] text-sm">May 18-21, 2026 • Vancouver, BC</p>
+          <p className="text-[var(--blush)] text-sm">May 18–21, 2026 • Vancouver, BC</p>
         </div>
 
         <div className="gold-divider max-w-md mx-auto mb-8" />
