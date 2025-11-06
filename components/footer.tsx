@@ -32,13 +32,13 @@ export function Footer() {
             Can't wait to celebrate with you!
           </h3>
           <p className="text-2xl text-[var(--gold)] font-semibold mb-2">#KylaTurns40</p>
-          <p className="text-[var(--blush)] text-sm">May 18-21, 2025 • Vancouver, BC</p>
+          <p className="text-[var(--blush)] text-sm">May 18-21, 2026 • Vancouver, BC</p>
         </div>
 
         <div className="gold-divider max-w-md mx-auto mb-8" />
 
         <div className="space-y-2 text-sm text-white/70 mb-8">
-          <p>© 2025 Kyla Turns 40</p>
+          <p>© 2026 Kyla Turns 40</p>
           <p>Presented by Brazen Bull Creative</p>
         </div>
 

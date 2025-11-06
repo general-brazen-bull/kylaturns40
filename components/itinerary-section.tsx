@@ -4,7 +4,7 @@ import { Clock, MapPin, AlertCircle } from "lucide-react"
 const events = [
   {
     date: "May 18",
-    day: "Sunday",
+    day: "Monday",
     items: [
       {
         time: "5 PM",
@@ -17,7 +17,7 @@ const events = [
   },
   {
     date: "May 19",
-    day: "Monday",
+    day: "Tuesday",
     items: [
       {
         time: "11 AM",
@@ -38,7 +38,7 @@ const events = [
   },
   {
     date: "May 20",
-    day: "Tuesday",
+    day: "Wednesday",
     items: [
       {
         time: "2 PM - 6 PM",
@@ -59,7 +59,7 @@ const events = [
   },
   {
     date: "May 21",
-    day: "Wednesday",
+    day: "Thursday",
     items: [
       {
         time: "10 AM",
@@ -90,7 +90,7 @@ export function ItinerarySection() {
           <div className="gold-divider max-w-xs mx-auto mb-6" />
           <p className="text-lg text-[var(--black)]/70 max-w-2xl mx-auto leading-relaxed">
             You're welcome to come for as much or as little of the birthday week as you'd like. The main celebration
-            will be <span className="font-semibold text-[var(--gold)]">May 20, 2025</span>.
+            will be <span className="font-semibold text-[var(--gold)]">May 20, 2026</span>.
           </p>
         </div>
 

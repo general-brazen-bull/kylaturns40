@@ -6,7 +6,7 @@ const faqData = [
     questions: [
       {
         q: "When is the celebration?",
-        a: "May 18-21, 2025. The main celebration is on May 20th.",
+        a: "May 18-21, 2026. The main celebration is on May 20th.",
       },
       {
         q: "Where are the main venues?",
