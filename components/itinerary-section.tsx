@@ -22,7 +22,7 @@ const events = [
       {
         time: "11 AM",
         title: "Brunch",
-        location: "Location TBD",
+        location: "Fable Diner (151 E Broadway)",
         description: "",
         icon: "🥂",
       },
@@ -64,7 +64,7 @@ const events = [
       {
         time: "10 AM",
         title: "Hangover Brunch & Paul's Birthday Toast",
-        location: "Deep Blue Distilleries",
+        location: "Fairmont Waterfront (900 Canada Pl)",
         description: "",
         icon: "🍳",
       },
