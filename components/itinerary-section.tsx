@@ -29,8 +29,8 @@ const events = [
       {
         time: "6 PM",
         title: "Steakhouse Dinner",
-        location: "Location TBD",
-        description: "RSVP early as seating is limited",
+        location: "Riley's Steakhouse (200 Burrard St.)",
+        description: "Private dining in the covered and heated garden patio. RSVP early as seating is limited",
         icon: "🥩",
         alert: true,
       },
@@ -64,14 +64,14 @@ const events = [
       {
         time: "10 AM",
         title: "Hangover Brunch & Paul's Birthday Toast",
-        location: "Fairmont Waterfront (900 Canada Pl)",
+        location: "Slate (670 Smithe St.)",
         description: "",
         icon: "🍳",
       },
       {
         time: "6 PM",
         title: "Sushi Dinner",
-        location: "Location TBD",
+        location: "O Lounge at Coast (1054 Alberni St.)",
         description: "",
         icon: "🍣",
       },
