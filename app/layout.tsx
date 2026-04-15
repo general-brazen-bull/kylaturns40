@@ -18,7 +18,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Kyla Turns 40! | Birthday Celebration in Vancouver",
-  description: "Join us for a weekend of fun, laughter, and memories in beautiful Vancouver. May 18-21, 2025.",
+  description: "Join us for a weekend of fun, laughter, and memories in beautiful Vancouver. May 18-21, 2026.",
   generator: "v0.app",
 }
 
