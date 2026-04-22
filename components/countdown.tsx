@@ -50,7 +50,7 @@ export function Countdown() {
   return (
     <div className="py-12 px-4 bg-[var(--black)]">
       <div className="max-w-3xl mx-auto text-center">
-        <p className="font-serif text-lg text-[var(--gold)] tracking-widest mb-6 opacity-80">
+        <p className="font-serif text-3xl text-[var(--gold)] tracking-widest mb-6 opacity-80">
           Until the Welcome Party
         </p>
         <div className="flex justify-center gap-4 md:gap-8">
