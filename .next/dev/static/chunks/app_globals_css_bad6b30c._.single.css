@@ -2350,7 +2350,21 @@
     color: var(--blush);
   }
 
-  .text-\[var\(--gold\)\], .text-\[var\(--gold\)\]\/100 {
+  .text-\[var\(--gold\)\] {
+    color: var(--gold);
+  }
+
+  .text-\[var\(--gold\)\]\/70 {
+    color: var(--gold);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .text-\[var\(--gold\)\]\/70 {
+      color: color-mix(in oklab, var(--gold) 70%, transparent);
+    }
+  }
+
+  .text-\[var\(--gold\)\]\/100 {
     color: var(--gold);
   }
 
@@ -2444,6 +2458,16 @@
     color: var(--color-white);
   }
 
+  .text-white\/40 {
+    color: #fff6;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .text-white\/40 {
+      color: color-mix(in oklab, var(--color-white) 40%, transparent);
+    }
+  }
+
   .text-white\/70 {
     color: #ffffffb3;
   }
@@ -2462,10 +2486,6 @@
     .text-white\/80 {
       color: color-mix(in oklab, var(--color-white) 80%, transparent);
     }
-  }
-
-  .lowercase {
-    text-transform: lowercase;
   }
 
   .uppercase {
@@ -2504,6 +2524,10 @@
 
   .opacity-70 {
     opacity: .7;
+  }
+
+  .opacity-80 {
+    opacity: .8;
   }
 
   .opacity-90 {

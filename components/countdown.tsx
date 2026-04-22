@@ -19,17 +19,23 @@ function getTimeLeft() {
 }
 
 export function Countdown() {
-  const [time, setTime] = useState(getTimeLeft())
+  const [time, setTime] = useState<ReturnType<typeof getTimeLeft> | undefined>(undefined)
 
   useEffect(() => {
+    setTime(getTimeLeft())
     const t = setInterval(() => setTime(getTimeLeft()), 1000)
     return () => clearInterval(t)
   }, [])
 
-  if (!time) {
+  // Don't render anything until client has mounted — prevents hydration mismatch
+  if (time === undefined) {
+    return <div className="py-12 px-4 bg-[var(--black)]" style={{ minHeight: "160px" }} />
+  }
+
+  if (time === null) {
     return (
       <div className="text-center py-6 bg-[var(--black)]">
-        <p className="font-serif text-4xl text-[var(--gold)]">The party has started! 🎉</p>
+        <p className="font-serif text-3xl text-[var(--gold)]">The party has started! 🎉</p>
       </div>
     )
   }
@@ -44,7 +50,7 @@ export function Countdown() {
   return (
     <div className="py-12 px-4 bg-[var(--black)]">
       <div className="max-w-3xl mx-auto text-center">
-        <p className="font-serif text-4xl text-[var(--gold)] tracking-widest mb-6 opacity-100">
+        <p className="font-serif text-lg text-[var(--gold)] tracking-widest mb-6 opacity-80">
           Until the Welcome Party
         </p>
         <div className="flex justify-center gap-4 md:gap-8">
@@ -53,13 +59,13 @@ export function Countdown() {
               <span className="font-serif text-5xl md:text-7xl font-bold text-white tabular-nums leading-none">
                 {pad(value)}
               </span>
-              <span className="mt-3 text-xs uppercase tracking-widest text-[var(--gold)]/100 font-medium">
+              <span className="mt-3 text-xs uppercase tracking-widest text-[var(--gold)]/70 font-medium">
                 {label}
               </span>
             </div>
           ))}
         </div>
-        <p className="mt-8 text-white/80 text-sm tracking-wide">
+        <p className="mt-8 text-white/40 text-sm tracking-wide">
           May 18, 2026 · 5:00 PM · Vancouver, BC
         </p>
       </div>
