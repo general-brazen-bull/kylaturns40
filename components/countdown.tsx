@@ -59,13 +59,13 @@ export function Countdown() {
               <span className="font-serif text-5xl md:text-7xl font-bold text-white tabular-nums leading-none">
                 {pad(value)}
               </span>
-              <span className="mt-3 text-xs uppercase tracking-widest text-[var(--gold)]/70 font-medium">
+              <span className="mt-3 text-xs uppercase tracking-widest text-[var(--gold)]/100 font-medium">
                 {label}
               </span>
             </div>
           ))}
         </div>
-        <p className="mt-8 text-white/40 text-sm tracking-wide">
+        <p className="mt-8 text-white/70 text-sm tracking-wide">
           May 18, 2026 · 5:00 PM · Vancouver, BC
         </p>
       </div>
